@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Cashlyv3.Server.Controllers;
 
@@ -39,6 +41,18 @@ public class AuthController : ControllerBase
         {
             return BadRequest(response.Message);
         }
+
+        return Ok(response);
+    }
+
+    [HttpPost("change-password"), Authorize]
+    public async Task<ActionResult<ServiceResponse<bool>>> ChangePassword([FromBody] string newPassword)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var response = await _authService.ChangePassword(int.Parse(userId), newPassword);
+
+        if (!response.Success)
+            return BadRequest(response.Message);
 
         return Ok(response);
     }
