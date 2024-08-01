@@ -1,6 +1,6 @@
 function ReportsPage() {
   return (
-    <p>Hello world!</p>
+    <p>this is Reports page</p>
   );
 }
 
