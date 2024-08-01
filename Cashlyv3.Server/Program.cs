@@ -1,5 +1,6 @@
 global using Cashlyv3.Server.Data;
 global using Microsoft.EntityFrameworkCore;
+using Cashlyv3.Server.Services.AuthService;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
