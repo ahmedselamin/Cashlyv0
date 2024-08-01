@@ -1,6 +1,6 @@
 global using Cashlyv3.Server.Data;
+global using Cashlyv3.Server.Services.AuthService;
 global using Microsoft.EntityFrameworkCore;
-using Cashlyv3.Server.Services.AuthService;
 
 
 var builder = WebApplication.CreateBuilder(args);
