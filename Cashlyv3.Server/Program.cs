@@ -1,7 +1,9 @@
 global using Cashlyv3.Server.Data;
+global using Cashlyv3.Server.Models;
 global using Cashlyv3.Server.Services.AuthService;
 global using Microsoft.EntityFrameworkCore;
 global using System.ComponentModel.DataAnnotations;
+
 
 
 
