@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState } from "react;
+import { toast } from "react-toastify";
 import {
     AppBar,
     Toolbar,
@@ -16,6 +17,10 @@ import {
 } from "@mui/material";
 
 const LandingPage = () => {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
     const [loginOpen, setLoginOpen] = useState(false);
 
     const [signUpOpen, setSignUpOpen] = useState(false);
@@ -44,8 +49,18 @@ const LandingPage = () => {
         handleLoginClose();
     };
 
-    const handleSignUpSubmit = (e) => {
+    const handleSignUpSubmit = async (e) => {
         e.preventDefault();
+        try {
+            await axios.post("https://localhost7001/api/Auth/register", {
+                username,
+                password,
+                confirmPassword,
+            });
+        }
+        catch (err) {
+            console.log(err)
+        }
         handleSignUpClose();
     };
 
@@ -214,6 +229,8 @@ const LandingPage = () => {
                             type="text"
                             fullWidth
                             required
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                         />
                         <TextField
                             margin="dense"
@@ -222,6 +239,8 @@ const LandingPage = () => {
                             type="password"
                             fullWidth
                             required
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                         <TextField
                             margin="dense"
@@ -230,6 +249,8 @@ const LandingPage = () => {
                             type="password"
                             fullWidth
                             required
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                         <DialogActions>
                             <Button onClick={handleSignUpClose} color="primary">
