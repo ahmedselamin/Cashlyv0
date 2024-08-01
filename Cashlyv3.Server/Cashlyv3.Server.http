@@ -1,6 +1,0 @@
-@Cashlyv3.Server_HostAddress = http://localhost:5114
-
-GET {{Cashlyv3.Server_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
