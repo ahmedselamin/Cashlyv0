@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35027.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cashlyv3.Server", "Cashlyv3.Server\Cashlyv3.Server.csproj", "{AD87862C-927E-4F5A-A03D-CA426DF8FBFB}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "cashlyv3.client", "Cashlyv3.Client\cashlyv3.client.esproj", "{C2A09769-0C21-4964-A532-2E58CB8319CD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AD87862C-927E-4F5A-A03D-CA426DF8FBFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD87862C-927E-4F5A-A03D-CA426DF8FBFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD87862C-927E-4F5A-A03D-CA426DF8FBFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD87862C-927E-4F5A-A03D-CA426DF8FBFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2A09769-0C21-4964-A532-2E58CB8319CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2A09769-0C21-4964-A532-2E58CB8319CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2A09769-0C21-4964-A532-2E58CB8319CD}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{C2A09769-0C21-4964-A532-2E58CB8319CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2A09769-0C21-4964-A532-2E58CB8319CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2A09769-0C21-4964-A532-2E58CB8319CD}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7BE8B1D3-FFE0-45F9-9D8E-31434F65E171}
+	EndGlobalSection
+EndGlobal
