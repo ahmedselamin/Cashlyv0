@@ -25,9 +25,7 @@ public class AuthController : ControllerBase
             }, request.Password);
 
         if (!response.Success)
-        {
             return BadRequest(response.Message);
-        }
 
         return Ok(response);
     }
@@ -38,9 +36,7 @@ public class AuthController : ControllerBase
         var response = await _authService.Login(request.Username, request.Password);
 
         if (!response.Success)
-        {
             return BadRequest(response.Message);
-        }
 
         return Ok(response);
     }
@@ -50,6 +46,17 @@ public class AuthController : ControllerBase
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var response = await _authService.ChangePassword(int.Parse(userId), newPassword);
+
+        if (!response.Success)
+            return BadRequest(response.Message);
+
+        return Ok(response);
+    }
+
+    [HttpPost("delete-account"), Authorize]
+    public async Task<ActionResult<ServiceResponse<bool>>> DeleteUser(int userId)
+    {
+        var response = await _authService.DeleteUser(userId);
 
         if (!response.Success)
             return BadRequest(response.Message);
