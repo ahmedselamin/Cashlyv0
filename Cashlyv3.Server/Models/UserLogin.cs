@@ -1,6 +1,6 @@
 ﻿namespace Cashlyv3.Server.Models;
 
-public class UseLogin
+public class UserLogin
 {
     [Required]
     public string Username { get; set; } = string.Empty;
