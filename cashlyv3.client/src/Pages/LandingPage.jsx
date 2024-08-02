@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 import {
     AppBar,
     Toolbar,
@@ -17,6 +19,10 @@ import {
 } from "@mui/material";
 
 const LandingPage = () => {
+    const navigate = useNavigate();
+
+    const [_, setCookies] = useCookies(["access_token"]);
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -41,11 +47,22 @@ const LandingPage = () => {
         setSignUpOpen(false);
     };
 
-    const handleLoginSubmit = (event) => {
-        event.preventDefault();
-        // Add login logic here
-        console.log("Username:", event.target.username.value);
-        console.log("Password:", event.target.password.value);
+    const handleLoginSubmit = (e) => {
+        e.preventDefault();
+
+        try {
+            await axios.post("https://localhost:7001/api/Auth/login", {
+                username,
+                password,
+            });
+
+            setCookies("access_token", response.data.token);
+            window.localStorage.setItem("userID", response.data.userID);
+            navigate("/home")
+        }
+        catch (err) {
+            console.log(err)
+        }
         handleLoginClose();
     };
 
@@ -186,6 +203,7 @@ const LandingPage = () => {
                     </Box>
                 </Container>
             </Box>
+            {/*login dialogg*/}
             <Dialog open={loginOpen} onClose={handleLoginClose}>
                 <DialogTitle>Login</DialogTitle>
                 <DialogContent>
@@ -197,6 +215,8 @@ const LandingPage = () => {
                             type="text"
                             fullWidth
                             required
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                         />
                         <TextField
                             margin="dense"
@@ -204,7 +224,8 @@ const LandingPage = () => {
                             label="Password"
                             type="password"
                             fullWidth
-                            required
+                            requiredvalue={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                         <DialogActions>
                             <Button onClick={handleLoginClose} color="primary">
