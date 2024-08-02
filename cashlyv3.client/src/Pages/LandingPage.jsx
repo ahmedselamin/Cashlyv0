@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
@@ -23,6 +23,10 @@ const LandingPage = () => {
 
     const [_, setCookies] = useCookies(["access_token"]);
 
+    const [loginForm, setLoginForm] = useState({ username: "", password: "" });
+    const [signupForm, setSignupForm] = useState({ username: "", password: "", confirmPassword: "" });
+
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -30,6 +34,20 @@ const LandingPage = () => {
     const [loginOpen, setLoginOpen] = useState(false);
 
     const [signUpOpen, setSignUpOpen] = useState(false);
+
+    const [errorMessage, setErrorMessage] = useState("");
+
+    useEffect(() => {
+        return () => {
+            setLoginForm({ username: "", password: "" });
+            setSignupForm({ username: "", password: "", confirmPassword: "" });
+        };
+    }, []);
+
+    const handleLoginOpen = () => setLoginOpen(true);
+    const handleLoginClose = () => setLoginOpen(false);
+    const handleSignUpOpen = () => setSignUpOpen(true);
+    const handleSignUpClose = () => setSignUpOpen(false);
 
     const handleLoginOpen = () => {
         setLoginOpen(true);
@@ -50,10 +68,11 @@ const LandingPage = () => {
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
 
+        setErrorMessage("");
+
         try {
             const response = await axios.post("https://localhost:7001/api/Auth/login", {
-                username,
-                password,
+                loginForm
             });
 
             setCookies("access_token", response.data.token);
@@ -62,6 +81,8 @@ const LandingPage = () => {
             navigate("/home");
         }
         catch (err) {
+            setErrorMessage("Login failed. Please check your credentials.");
+            
             console.log(err)
         }
         handleLoginClose();
@@ -69,16 +90,24 @@ const LandingPage = () => {
 
     const handleSignUpSubmit = async (e) => {
         e.preventDefault();
+
+        setErrorMessage("");
+
+        if (signupForm.password !== signupForm.confirmPassword) {
+            setErrorMessage("Passwords do not match.");
+            return;
+        }
+
         try {
             await axios.post("https://localhost:7001/api/Auth/register", {
-                username,
-                password,
-                confirmPassword,
+                signupForm
             });
         }
         catch (err) {
+            setErrorMessage("Sign up failed. Please try again.");
             console.log(err)
         }
+
         handleSignUpClose();
     };
 
@@ -216,8 +245,8 @@ const LandingPage = () => {
                             type="text"
                             fullWidth
                             required
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={loginForm.username}
+                            onChange={(e) => setUsername({ ...loginForm, username: e.target.value })}
                         />
                         <TextField
                             margin="dense"
@@ -225,9 +254,10 @@ const LandingPage = () => {
                             label="Password"
                             type="password"
                             fullWidth
-                            requiredvalue={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            requiredvalue={loginForm.password}
+                            onChange={(e) => setPassword({...loginForm, password: e.target.value})}
                         />
+                        {errorMessage && <Typography color="error">{errorMessage}</Typography>}
                         <DialogActions>
                             <Button onClick={handleLoginClose} color="primary">
                                 Cancel
@@ -251,8 +281,8 @@ const LandingPage = () => {
                             type="text"
                             fullWidth
                             required
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={signUpForm.username}
+                            onChange={(e) => setUsername({ ...signupForm, username: e.target.value })}
                         />
                         <TextField
                             margin="dense"
@@ -261,8 +291,8 @@ const LandingPage = () => {
                             type="password"
                             fullWidth
                             required
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={signUpForm.password}
+                            onChange={(e) => setPassword({ ...signupForm, password: e.target.value })}
                         />
                         <TextField
                             margin="dense"
@@ -271,9 +301,10 @@ const LandingPage = () => {
                             type="password"
                             fullWidth
                             required
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            value={signUpForm.confirmPassword}
+                            onChange={(e) => setConfirmPassword({ ...signUpForm, confirmPassword: e.target.value})}
                         />
+                        {errorMessage && <Typography color="error">{errorMessage}</Typography>}
                         <DialogActions>
                             <Button onClick={handleSignUpClose} color="primary">
                                 Cancel
