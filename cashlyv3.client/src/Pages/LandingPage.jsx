@@ -20,19 +20,12 @@ import {
 
 const LandingPage = () => {
     const navigate = useNavigate();
-
     const [_, setCookies] = useCookies(["access_token"]);
 
     const [loginForm, setLoginForm] = useState({ username: "", password: "" });
     const [signupForm, setSignupForm] = useState({ username: "", password: "", confirmPassword: "" });
 
-
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-
     const [loginOpen, setLoginOpen] = useState(false);
-
     const [signUpOpen, setSignUpOpen] = useState(false);
 
     const [errorMessage, setErrorMessage] = useState("");
@@ -49,191 +42,97 @@ const LandingPage = () => {
     const handleSignUpOpen = () => setSignUpOpen(true);
     const handleSignUpClose = () => setSignUpOpen(false);
 
-    const handleLoginOpen = () => {
-        setLoginOpen(true);
-    };
-
-    const handleLoginClose = () => {
-        setLoginOpen(false);
-    };
-
-    const handleSignUpOpen = () => {
-        setSignUpOpen(true);
-    };
-
-    const handleSignUpClose = () => {
-        setSignUpOpen(false);
-    };
-
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
-
         setErrorMessage("");
-
         try {
-            const response = await axios.post("https://localhost:7001/api/Auth/login", {
-                loginForm
-            });
-
+            const response = await axios.post("https://localhost:7001/api/Auth/login", loginForm);
             setCookies("access_token", response.data.token);
             window.localStorage.setItem("userID", response.data.userID);
-
             navigate("/home");
-        }
-        catch (err) {
+        } catch (err) {
             setErrorMessage("Login failed. Please check your credentials.");
-            
-            console.log(err)
+            console.log(err);
         }
         handleLoginClose();
     };
 
     const handleSignUpSubmit = async (e) => {
         e.preventDefault();
-
         setErrorMessage("");
-
         if (signupForm.password !== signupForm.confirmPassword) {
             setErrorMessage("Passwords do not match.");
             return;
         }
-
         try {
-            await axios.post("https://localhost:7001/api/Auth/register", {
-                signupForm
-            });
-        }
-        catch (err) {
+            await axios.post("https://localhost:7001/api/Auth/register", signupForm);
+            handleSignUpClose();
+        } catch (err) {
             setErrorMessage("Sign up failed. Please try again.");
-            console.log(err)
+            console.log(err);
         }
-
-        handleSignUpClose();
     };
 
     return (
         <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-            {/* Header */}
             <AppBar position="sticky">
                 <Toolbar>
-                    <Typography
-                        variant="h6"
-                        sx={{
-                            flexGrow: 1,
-                            fontFamily: "Georgia, serif",
-                            fontSize: "1.8rem",
-                        }}
-                    >
+                    <Typography variant="h6" sx={{ flexGrow: 1, fontFamily: "Georgia, serif", fontSize: "1.8rem" }}>
                         Cashly
                     </Typography>
-                    <Button color="inherit" onClick={handleLoginOpen}>
-                        Login
-                    </Button>
+                    <Button color="inherit" onClick={handleLoginOpen}>Login</Button>
                 </Toolbar>
             </AppBar>
 
-            {/* Main content */}
             <Box component="main" sx={{ flex: "1 0 auto" }}>
-                {/* Hero Section */}
-                <Box
-                    sx={{
-                        bgcolor: "primary.main",
-                        color: "white",
-                        py: 9,
-                        textAlign: "center",
-                    }}
-                >
+                <Box sx={{ bgcolor: "primary.main", color: "white", py: 9, textAlign: "center" }}>
                     <Container>
-                        <Typography variant="h2" component="h1" gutterBottom>
-                            Welcome to Cashly
-                        </Typography>
+                        <Typography variant="h2" component="h1" gutterBottom>Welcome to Cashly</Typography>
                         <Typography variant="h6" component="p" gutterBottom>
-                            Effortlessly manage your finances with ease. Track expenses,
-                            generate reports, all in a single intuitive platform.
+                            Effortlessly manage your finances with ease. Track expenses, generate reports, all in a single intuitive platform.
                         </Typography>
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            size="large"
-                            sx={{ my: 1 }}
-                            onClick={handleSignUpOpen}
-                        >
+                        <Button variant="contained" color="secondary" size="large" sx={{ my: 1 }} onClick={handleSignUpOpen}>
                             Get Started
                         </Button>
                     </Container>
                 </Box>
 
-                {/* Features Section */}
                 <Container sx={{ py: 8 }}>
-                    <Typography variant="h4" component="h2" gutterBottom align="center">
-                        Features
-                    </Typography>
+                    <Typography variant="h4" component="h2" gutterBottom align="center">Features</Typography>
                     <Grid container spacing={4}>
                         <Grid item xs={12} md={4}>
                             <Paper sx={{ p: 4, textAlign: "center" }}>
-                                <Typography variant="h6" component="h3" gutterBottom>
-                                    Easy Tracking
-                                </Typography>
-                                <Typography component="p">
-                                    Track your income and expenses with a simple, intuitive
-                                    interface.
-                                </Typography>
+                                <Typography variant="h6" component="h3" gutterBottom>Easy Tracking</Typography>
+                                <Typography component="p">Track your income and expenses with a simple, intuitive interface.</Typography>
                             </Paper>
                         </Grid>
                         <Grid item xs={12} md={4}>
                             <Paper sx={{ p: 4, textAlign: "center" }}>
-                                <Typography variant="h6" component="h3" gutterBottom>
-                                    Detailed Reports
-                                </Typography>
-                                <Typography component="p">
-                                    Generate detailed financial reports to understand your
-                                    spending habits.
-                                </Typography>
+                                <Typography variant="h6" component="h3" gutterBottom>Detailed Reports</Typography>
+                                <Typography component="p">Generate detailed financial reports to understand your spending habits.</Typography>
                             </Paper>
                         </Grid>
                         <Grid item xs={12} md={4}>
                             <Paper sx={{ p: 4, textAlign: "center" }}>
-                                <Typography variant="h6" component="h3" gutterBottom>
-                                    Secure and Private
-                                </Typography>
-                                <Typography component="p">
-                                    Your data is secure with us. Privacy is our top priority.
-                                </Typography>
+                                <Typography variant="h6" component="h3" gutterBottom>Secure and Private</Typography>
+                                <Typography component="p">Your data is secure with us. Privacy is our top priority.</Typography>
                             </Paper>
                         </Grid>
                     </Grid>
                 </Container>
             </Box>
 
-            {/* Footer */}
-            <Box
-                component="footer"
-                sx={{
-                    bgcolor: "primary.dark",
-                    color: "white",
-                    py: 2,
-                    textAlign: "center",
-                    mt: "auto", // Pushes footer to the bottom
-                }}
-            >
+            <Box component="footer" sx={{ bgcolor: "primary.dark", color: "white", py: 2, textAlign: "center", mt: "auto" }}>
                 <Container>
-                    <Typography variant="body1" gutterBottom>
-                        &copy; {new Date().getFullYear()} Cashly. All rights reserved.
-                    </Typography>
+                    <Typography variant="body1" gutterBottom>&copy; {new Date().getFullYear()} Cashly. All rights reserved.</Typography>
                     <Box>
-                        <Button color="inherit" href="#" sx={{ color: "white" }}>
-                            Privacy Policy
-                        </Button>
-                        <Button color="inherit" href="#" sx={{ color: "white" }}>
-                            Terms of Service
-                        </Button>
-                        <Button color="inherit" href="#" sx={{ color: "white" }}>
-                            Contact Us
-                        </Button>
+                        <Button color="inherit" href="#" sx={{ color: "white" }}>Privacy Policy</Button>
+                        <Button color="inherit" href="#" sx={{ color: "white" }}>Terms of Service</Button>
+                        <Button color="inherit" href="#" sx={{ color: "white" }}>Contact Us</Button>
                     </Box>
                 </Container>
             </Box>
-            {/*login dialogg*/}
+
             <Dialog open={loginOpen} onClose={handleLoginClose}>
                 <DialogTitle>Login</DialogTitle>
                 <DialogContent>
@@ -246,7 +145,7 @@ const LandingPage = () => {
                             fullWidth
                             required
                             value={loginForm.username}
-                            onChange={(e) => setUsername({ ...loginForm, username: e.target.value })}
+                            onChange={(e) => setLoginForm({ ...loginForm, username: e.target.value })}
                         />
                         <TextField
                             margin="dense"
@@ -254,22 +153,19 @@ const LandingPage = () => {
                             label="Password"
                             type="password"
                             fullWidth
-                            requiredvalue={loginForm.password}
-                            onChange={(e) => setPassword({...loginForm, password: e.target.value})}
+                            required
+                            value={loginForm.password}
+                            onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
                         />
                         {errorMessage && <Typography color="error">{errorMessage}</Typography>}
                         <DialogActions>
-                            <Button onClick={handleLoginClose} color="primary">
-                                Cancel
-                            </Button>
-                            <Button type="submit" color="primary">
-                                Login
-                            </Button>
+                            <Button onClick={handleLoginClose} color="primary">Cancel</Button>
+                            <Button type="submit" color="primary">Login</Button>
                         </DialogActions>
                     </Box>
                 </DialogContent>
             </Dialog>
-            {/* sign up dialog */}
+
             <Dialog open={signUpOpen} onClose={handleSignUpClose}>
                 <DialogTitle>Join</DialogTitle>
                 <DialogContent>
@@ -281,8 +177,8 @@ const LandingPage = () => {
                             type="text"
                             fullWidth
                             required
-                            value={signUpForm.username}
-                            onChange={(e) => setUsername({ ...signupForm, username: e.target.value })}
+                            value={signupForm.username}
+                            onChange={(e) => setSignupForm({ ...signupForm, username: e.target.value })}
                         />
                         <TextField
                             margin="dense"
@@ -291,8 +187,8 @@ const LandingPage = () => {
                             type="password"
                             fullWidth
                             required
-                            value={signUpForm.password}
-                            onChange={(e) => setPassword({ ...signupForm, password: e.target.value })}
+                            value={signupForm.password}
+                            onChange={(e) => setSignupForm({ ...signupForm, password: e.target.value })}
                         />
                         <TextField
                             margin="dense"
@@ -301,17 +197,13 @@ const LandingPage = () => {
                             type="password"
                             fullWidth
                             required
-                            value={signUpForm.confirmPassword}
-                            onChange={(e) => setConfirmPassword({ ...signUpForm, confirmPassword: e.target.value})}
+                            value={signupForm.confirmPassword}
+                            onChange={(e) => setSignupForm({ ...signupForm, confirmPassword: e.target.value })}
                         />
                         {errorMessage && <Typography color="error">{errorMessage}</Typography>}
                         <DialogActions>
-                            <Button onClick={handleSignUpClose} color="primary">
-                                Cancel
-                            </Button>
-                            <Button type="submit" color="primary">
-                                Sign Up
-                            </Button>
+                            <Button onClick={handleSignUpClose} color="primary">Cancel</Button>
+                            <Button type="submit" color="primary">Sign Up</Button>
                         </DialogActions>
                     </Box>
                 </DialogContent>
