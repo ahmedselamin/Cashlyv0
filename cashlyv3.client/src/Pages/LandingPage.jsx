@@ -47,18 +47,19 @@ const LandingPage = () => {
         setSignUpOpen(false);
     };
 
-    const handleLoginSubmit = (e) => {
+    const handleLoginSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            await axios.post("https://localhost:7001/api/Auth/login", {
+            const response = await axios.post("https://localhost:7001/api/Auth/login", {
                 username,
                 password,
             });
 
             setCookies("access_token", response.data.token);
             window.localStorage.setItem("userID", response.data.userID);
-            navigate("/home")
+
+            navigate("/home");
         }
         catch (err) {
             console.log(err)
