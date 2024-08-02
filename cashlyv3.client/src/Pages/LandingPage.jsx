@@ -52,7 +52,7 @@ const LandingPage = () => {
     const handleSignUpSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("https://localhost7001/api/Auth/register", {
+            await axios.post("https://localhost:7001/api/Auth/register", {
                 username,
                 password,
                 confirmPassword,
