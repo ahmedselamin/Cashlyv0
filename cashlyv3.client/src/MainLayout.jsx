@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useCookies } from "react-cookie";
 import { Outlet } from "react-router-dom";
 import {
     AppBar,
@@ -21,6 +22,8 @@ import Sidebar from "./Components/Sidebar";
 const drawerWidth = 240;
 
 const MainLayout = () => {
+    const [cookies, setCookies] = useCookies(["access_token"]);
+
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -36,6 +39,13 @@ const MainLayout = () => {
 
     const handleMenuClose = () => {
         setAnchorEl(null);
+    };
+
+    const logout = () => {
+        setCookies("access_token", "");
+
+        window.localStorage.removeItem("userID");
+        navigate("/");
     };
 
     return (
